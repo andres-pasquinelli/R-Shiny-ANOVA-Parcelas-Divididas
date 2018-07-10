@@ -34,12 +34,11 @@ summary(ANOVA.Rend)
 LSD.Trat.Rend<-LSD.test(modelo.Rend, c("Parcela", "Hibrido"),  alpha = 0.01, console = T )
 ANOVA.Rend
 LSD.Trat.Rend<-LSD.test(ANOVA.Rend, c("Hibrido"), alpha = 0.01, console = F)
-ggbarplot(x = LSD.Trat.Rend$groups,
+bar.group(x = LSD.Trat.Rend$groups, 
           lwd=2,
           main="Prueba de comparación de medias - LSD",
           xlab="",
-          ylab="input$n5",
-          las=3,
+          las=2,
           cex.axis=0.7,
           col="#6393fd")
 
