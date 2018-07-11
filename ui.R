@@ -36,11 +36,21 @@ navbarPage("ANOVA Parcelas Dividias con BCA",
       textInput("n5", "Unidad Variable Dependiente",value = "Rendimiento (kg/ha)"),
       textInput("n7", "Tratamiento Testigo",value = "T1")
       
-    )),
+    ),
+    wellPanel(
+      
+      numericInput("n8", "Nº de columna Row:",
+                   min = 0, max = 20, value = 0, step = 1),
+      numericInput("n9", "Nº de columna Col:",
+                   min = 0, max = 20, value = 0, step = 1)
+      
+    )
+    ),
 
     # ----Show a exel table ---
     column(9,
-      dataTableOutput('contents')
+      dataTableOutput('contents'),
+      plotOutput("plano")
     )),
 
 #---Analisis TabPanel---

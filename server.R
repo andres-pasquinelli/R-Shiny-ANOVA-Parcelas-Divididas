@@ -13,6 +13,7 @@ library(agricolae)
 library(car)
 library(knitr)
 library(ggpubr)
+library(lattice)
 
 shinyServer(function(input, output) {
   
@@ -38,10 +39,14 @@ shinyServer(function(input, output) {
        formatStyle(names(tab1[input$n0]), backgroundColor = '#6393fd')%>%
        formatStyle(names(tab1[input$n2]),backgroundColor = '#91b3fe')%>% 
        formatStyle(names(tab1[input$n3]),backgroundColor = "#ceddfe")%>% 
+       formatStyle(names(tab1[input$n8]),backgroundColor = "#ccccce")%>% 
+       formatStyle(names(tab1[input$n9]),backgroundColor = "#ceccce")%>% 
        formatString(input$n0)%>%
        formatString(input$n1)%>%
-       formatString(input$n2)%>% 
-       formatRound(1:10,input$n4) 
+       formatString(input$n2)%>%
+       formatRound(1:10,input$n4)%>%
+       formatRound(input$n8,0)%>%
+       formatRound(input$n9,0)
   }} )
   
   modelo<-reactive({
@@ -67,6 +72,20 @@ shinyServer(function(input, output) {
     dat[,input$n2]<-lapply(dat[,input$n2], factor)
     modelo2<-aov(VarDep ~ Parcela*Tratamiento+Bloque*Parcela,data=dat)
   })
+  
+  output$plano <- renderPlot({
+    if (is.null(Rend())){
+      return(NULL)}
+    if (input$n8==0||input$n9==0){
+      return(NULL)}
+    else{
+      dat<-Rend()
+      setnames(dat, input$n8, "row")
+      setnames(dat, input$n9, "col")
+      setnames(dat, input$n3, "VarDep")
+      levelplot(VarDep ~ col*row, data=dat,xlab = "Columnas",ylab = "Filas", main="Heat Map de la Var. Dep en el plano")
+      
+    }})
   
   
   output$plots <- renderPlot({
